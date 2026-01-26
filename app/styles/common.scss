@@ -1,0 +1,21 @@
+//font-size
+$ll: 3.2rem;
+$l: 2.4rem;
+$m: 1.6rem;
+$s: 1.2rem;
+$xs: 1rem;
+
+// color
+$base: #fff9f5;
+$main: #826afe;
+$mainHalf: rgba(131, 106, 254, 0.5);
+$accent: #ff4fc3;
+$star: #ffcc00;
+$black: #0b132b;
+$blackHalf: rgba(11, 19, 43, 0.5);
+$blackQuarter: rgba(11, 19, 43, 0.25);
+$white: #fafafa;
+$whiteThreeQuarters: rgba(250, 250, 250, 0.75);
+
+// font-family
+@import url("https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@100;300;400;500;700;800;900&display=swap");
