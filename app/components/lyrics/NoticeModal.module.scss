@@ -1,0 +1,73 @@
+@use "../../styles/common.scss" as *;
+
+// モーダルウィンドウ
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(0.4rem);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s;
+}
+
+//モーダル
+.modalContent {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2.4rem;
+  border-radius: 1.6rem;
+  max-width: 80%;
+  box-shadow: 0 0.8rem 3.2rem rgba(0, 0, 0, 0.3);
+
+  h2 {
+    color: $white;
+    font-size: $l;
+    margin-bottom: 1.6rem;
+    text-align: center;
+  }
+
+  .modalText {
+    color: $white;
+    font-size: $m;
+    line-height: 2.4rem;
+    margin-bottom: 2.4rem;
+    text-align: center;
+
+    span {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+  }
+
+  .modalCloseBtn {
+    width: 100%;
+    padding: 1.2rem;
+    background: $white;
+    color: #667eea;
+    border: none;
+    border-radius: 0.8rem;
+    font-size: $m;
+    font-weight: bold;
+    cursor: pointer;
+    transition: opacity 0.3s;
+
+    &:active {
+      opacity: 0.8;
+    }
+  }
+}
+
+// アニメーション
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

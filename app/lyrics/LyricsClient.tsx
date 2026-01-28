@@ -4,8 +4,12 @@ import { useSearchParams, useRouter } from "next/navigation";
 import styles from "./Lyrics.module.scss";
 import backBtn from "../../public/images/icons/back.svg";
 import nextBtn from "../../public/images/icons/next.svg";
+import memo from "../../public/images/icons/memo.svg";
 import { MarqueeText } from "../components/lyrics/MarqueeText";
-import { useState, useMemo, useEffect } from "react";
+import MemoModal from "../components/lyrics/MemoModal";
+import NoticeModal from "../components/lyrics/NoticeModal";
+import { useMemoManager } from "../components/lyrics/useMemoManager";
+import { useState, useMemo } from "react";
 
 type Props = {
   song: {
@@ -30,6 +34,20 @@ export default function Lyrics({ song }: Props) {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [showModal, setShowModal] = useState(false);
 
+  // メモ機能
+  const {
+    memos,
+    showMemoModal,
+    selectedPhraseId,
+    memoText,
+    setMemoText,
+    handleTouchStart,
+    handleTouchEnd,
+    handleSaveMemo,
+    handleDeleteMemo,
+    handleCloseMemoModal,
+  } = useMemoManager(song.phrases[0]?.id);
+
   // useEffect(() => {
   //   setShowModal(true);
   // }, []);
@@ -51,6 +69,9 @@ export default function Lyrics({ song }: Props) {
   const currentSection = sections[currentPageIndex];
   const totalPages = sections.length;
 
+  // 選択されたフレーズを取得
+  const selectedPhrase = song.phrases.find((p) => p.id === selectedPhraseId);
+
   const goToPrevPage = () => {
     setCurrentPageIndex((prev) => Math.max(0, prev - 1));
   };
@@ -70,31 +91,17 @@ export default function Lyrics({ song }: Props) {
 
   return (
     <div className={styles.container} style={containerStyle}>
-      {showModal && (
-        <div
-          className={styles.modalOverlay}
-          onClick={() => setShowModal(false)}
-        >
-          <div
-            className={styles.modalContent}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2>ご注意</h2>
-            <p className={styles.modalText}>
-              実際の歌詞の取得が難しいため、代わりに
-              <br />
-              <span>AIが生成した歌詞</span>
-              を表示しています。そのため、内容が実際の歌詞と異なります。
-            </p>
-            <button
-              className={styles.modalCloseBtn}
-              onClick={() => setShowModal(false)}
-            >
-              閉じる
-            </button>
-          </div>
-        </div>
-      )}
+      <NoticeModal show={showModal} onClose={() => setShowModal(false)} />
+      <MemoModal
+        show={showMemoModal}
+        selectedPhrase={song.phrases.find((p) => p.id === selectedPhraseId)}
+        memoText={memoText}
+        hasExistingMemo={!!memos[selectedPhraseId!]}
+        onMemoTextChange={setMemoText}
+        onSave={handleSaveMemo}
+        onDelete={handleDeleteMemo}
+        onClose={handleCloseMemoModal}
+      />
       <header className={styles.header}>
         <button className={styles.backBtn} onClick={() => router.back()}>
           <Image src={backBtn} alt="戻るボタン" />
@@ -131,9 +138,30 @@ export default function Lyrics({ song }: Props) {
           <h3 className={styles.lyricsTitle}>[{currentSection?.section}]</h3>
           <ul className={styles.lyricsList}>
             {currentSection?.phrases.map((p) => (
-              <li key={p.id} className={styles.lyrics}>
-                <p className={styles.lyricsText}>{p.lyricEn}</p>
-                <p className={styles.translation}>{p.lyricJa}</p>
+              <li
+                key={p.id}
+                className={`${styles.lyrics} ${memos[p.id] ? styles.hasMemo : ""}`}
+                onTouchStart={() => handleTouchStart(p.id)}
+                onTouchEnd={handleTouchEnd}
+                onMouseDown={() => handleTouchStart(p.id)}
+                onMouseUp={handleTouchEnd}
+                onMouseLeave={handleTouchEnd}
+              >
+                <div className={styles.lyricsContent}>
+                  <div>
+                    {showOriginal && (
+                      <p className={styles.lyricsText}>{p.lyricEn}</p>
+                    )}
+                    {showTranslation && (
+                      <p className={styles.translation}>{p.lyricJa}</p>
+                    )}
+                  </div>
+                  {memos[p.id] && (
+                    <div className={styles.memoIcon} title="メモあり">
+                      <Image src={memo} alt="メモアイコン" />
+                    </div>
+                  )}
+                </div>
               </li>
             ))}
           </ul>

@@ -1,0 +1,114 @@
+@use "../../styles/common.scss" as *;
+
+// モーダルウィンドウ
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(0.4rem);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s;
+}
+
+.memoModalContent {
+  background: $white;
+  padding: 2.4rem;
+  border-radius: 2.4rem;
+  width: 90%;
+  max-width: 40rem;
+  box-shadow: 0 0rem 3.2rem rgba(0, 0, 0, 0.3);
+  position: relative;
+  .closeBtn {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.2rem;
+    width: 2.4rem;
+    height: 2.4rem;
+    padding: 1.6rem;
+    font-size: $l;
+    color: $blackQuarter;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+      background 0.3s,
+      transform 0.3s;
+    z-index: 10;
+    &:active {
+      transform: scale(1.05);
+    }
+  }
+
+  .memoModalHeader {
+    margin-bottom: 1.6rem;
+    padding: 0.8rem 1.6rem;
+    border-left: 6px solid $blackHalf;
+    .selectedLyric {
+      font-size: $l;
+      font-weight: bold;
+      color: $blackHalf;
+      margin-bottom: 0.8rem;
+      line-height: 2.8rem;
+    }
+    .selectedTranslation {
+      font-size: $m;
+      color: $blackHalf;
+      line-height: 2.4rem;
+    }
+  }
+
+  .memoTextarea {
+    width: 100%;
+    min-height: 30dvh;
+    padding: 1.2rem;
+    border-radius: 0.8rem;
+    font-size: $m;
+    resize: none;
+    margin-bottom: 4rem;
+    background: rgba(130, 106, 254, 0.2);
+    &:focus {
+      min-height: 50dvh;
+      outline: none;
+      border: 0.3rem solid $main;
+      background: $white;
+    }
+  }
+
+  .memoModalButtons {
+    display: flex;
+    justify-content: center;
+    gap: 1.6rem;
+    button {
+      width: 50%;
+      padding: 1.2rem 0;
+      border: none;
+      border-radius: 1.6rem;
+      font-size: $m;
+      font-weight: bold;
+      box-shadow: 0 0 0.4rem rgba(35, 35, 35, 0.25);
+      transition: transform 0.3s;
+      &:active {
+        transform: scale(1.05);
+      }
+    }
+
+    .memoDeleteBtn {
+      background-color: $white;
+      color: #e05353;
+    }
+
+    .memoSaveBtn {
+      background: $main;
+      color: $white;
+      box-shadow:
+        -8px -8px 8px 0 #6155f5 inset,
+        0 0 4px 0 rgba(35, 35, 35, 0.25);
+    }
+  }
+}
