@@ -1,0 +1,322 @@
+@use "../styles/common.scss" as *;
+
+.container {
+  width: 100%;
+  height: 100dvh;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(35, 35, 35, 0.5);
+    backdrop-filter: blur(4rem);
+    z-index: 0;
+  }
+}
+
+//header
+.header {
+  width: 100%;
+  height: 12dvh;
+  padding: 0 2.4rem 0 1.6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  .backBtn {
+    width: 2.4rem;
+    height: 2.4rem;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+  .songInfo {
+    width: 100%;
+    max-width: 18rem;
+    overflow: hidden;
+  }
+  .toggleBtnWrap {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.8rem;
+    align-items: center;
+    .toggleBtn {
+      width: 6.4rem;
+      height: 2.4rem;
+      display: inline-flex;
+      align-items: center;
+      position: relative;
+      border-radius: 5.6rem;
+      background-color: rgba(35, 35, 35, 0.25);
+      transition: background-color 0.4s;
+      overflow: hidden;
+      //丸い部分
+      .toggleCircle {
+        width: 3.2rem;
+        height: 2.4rem;
+        border-radius: 5.6rem;
+        position: absolute;
+        left: 0;
+        box-shadow: 0 0 2px 0 rgba(35, 35, 35, 0.25);
+        transition:
+          left 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+          background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 2;
+        background-color: $blackQuarter;
+      }
+
+      // 丸の上のテキスト(ON/OFF)
+      .toggleText {
+        width: 3.2rem;
+        height: 2.4rem;
+        position: absolute;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: $s;
+        color: $white;
+        z-index: 3;
+        transition: left 0.4s;
+        text-shadow: 0 0 4px rgba(35, 35, 35, 0.25);
+        &::before {
+          content: "OFF";
+        }
+      }
+      // 「原文」のラベル
+      .labelText {
+        position: absolute;
+        top: 0;
+        right: 0.8rem;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        color: $white;
+        font-weight: bold;
+        font-size: $xs;
+        z-index: 1;
+        text-shadow: 0 0 4px rgba(35, 35, 35, 0.25);
+        transition:
+          left 0.4s,
+          right 0.4s;
+      }
+
+      &:has(:checked) {
+        background-color: rgba(130, 106, 254, 0.5);
+      }
+
+      &:has(:checked) .toggleCircle {
+        left: 50%;
+        background-color: $main;
+      }
+
+      &:has(:checked) .toggleText {
+        left: 50%;
+      }
+
+      &:has(:checked) .toggleText::before {
+        content: "ON";
+      }
+
+      &:has(:checked) .labelText {
+        left: 0.8rem;
+        right: auto;
+      }
+
+      input {
+        display: none;
+      }
+    }
+  }
+}
+
+.main {
+  width: 100%;
+  height: 88dvh;
+  position: relative;
+  z-index: 1;
+  .lyricsWrap {
+    width: 100%;
+    height: 78dvh;
+    overflow-y: auto;
+    color: $whiteThreeQuarters;
+    position: relative;
+    text-shadow: 0 0 4px rgba(35, 35, 35, 0.25);
+    animation: fadeIn 0.8s;
+    .lyricsTitle {
+      padding: 0 1.6rem;
+      color: $whiteThreeQuarters;
+      font-size: $m;
+      margin-bottom: 0.4rem;
+    }
+    .lyricsList {
+      padding: 0 1.6rem 0;
+      display: flex;
+      flex-direction: column;
+      row-gap: 3.2rem;
+
+      .lyrics {
+        display: flex;
+        flex-direction: column;
+        row-gap: 0.8rem;
+        position: relative;
+        cursor: pointer;
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+        padding: 1.6rem;
+        border-radius: 1.6rem;
+        transition: background-color 0.2s;
+
+        &:active {
+          background-color: rgba(130, 106, 254, 0.15);
+        }
+
+        &.hasMemo {
+          background-color: rgba(130, 106, 254, 0.1);
+          border-left: 0.4rem solid $main;
+        }
+
+        .memoIndicator {
+          position: absolute;
+          top: 0.8rem;
+          right: 0.8rem;
+          font-size: 2rem;
+          filter: drop-shadow(0 0 4px rgba(35, 35, 35, 0.25));
+        }
+
+        .lyricsText {
+          display: flex;
+          flex-direction: column;
+          row-gap: 0.8rem;
+          font-size: $l;
+          line-height: 3.2rem;
+        }
+        .translation {
+          font-size: $m;
+        }
+      }
+    }
+  }
+  .lyricsExplain {
+    width: 100%;
+    height: 5.6rem;
+    background-color: $whiteThreeQuarters;
+    position: absolute;
+    bottom: 0;
+    z-index: 100;
+    border-radius: 3.2rem 3.2rem 0 0;
+    backdrop-filter: blur(4rem);
+  }
+  .pageNation {
+    width: 100%;
+    height: 10dvh;
+    padding: 0 1.6rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $main;
+    button {
+      width: 2.4rem;
+      height: 2.4rem;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+    span {
+      padding: 0.4rem 0.8rem;
+      background-color: $blackQuarter;
+      border-radius: 2.4rem;
+      font-size: $m;
+      color: $white;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// モーダルウィンドウ
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: $blackHalf;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s;
+  .modalContent {
+    width: 80%;
+    max-width: 32rem;
+    background-color: $white;
+    border-radius: 2.4rem;
+    padding: 2.4rem;
+    box-shadow: 0 0px 2.4rem rgba(0, 0, 0, 0.25);
+    animation: fadeIn 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    h2 {
+      font-size: $l;
+      font-weight: bolder;
+      color: $main;
+      margin-bottom: 0.8rem;
+    }
+    .modalText {
+      font-size: $m;
+      color: $black;
+      line-height: 2.4rem;
+      text-align: left;
+      line-height: normal;
+      span {
+        font-size: 1.8rem;
+        padding-right: 0.4rem;
+        font-weight: bold;
+      }
+    }
+    .modalCloseBtn {
+      border-radius: 1.6rem;
+      background-color: $main;
+      box-shadow:
+        -8px -8px 8px 0 var(--Accents-Indigo, #6155f5) inset,
+        0 0 4px 0 rgba(35, 35, 35, 0.25);
+      font-size: $m;
+      font-weight: bolder;
+      color: $base;
+      padding: 1.2rem 4.8rem;
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+      margin-top: 2.4rem;
+
+      &:active {
+        transform: scale(1.05);
+        box-shadow:
+          -4px -4px 4px 0 var(--Accents-Indigo, #6155f5) inset,
+          0 0 2px 0 rgba(35, 35, 35, 0.25);
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
-import styles from "../search/Search.module.scss";
-import Levels from "../data/levels";
+import styles from "../../search/Search.module.scss";
+import Levels from "../../data/levels";
 
 export default function SearchLevel() {
   return (

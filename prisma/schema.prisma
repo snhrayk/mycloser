@@ -6,19 +6,39 @@
 
 datasource db {
   provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 generator client{
   provider = "prisma-client-js"
 }
 
-model webZemi_Users {
-  id              Int     @id @default(autoincrement())
-  class_name      String? @db.VarChar(10)
-  graduation_year Int?
-  name            String? @db.VarChar(50)
-  username        String? @db.VarChar(50)
-  password        String? @db.VarChar(255)
+model Song {
+  id         Int          @id @default(autoincrement())
+  title      String       @unique
+  background String
+  phrases    SongPhrase[]
+  createdAt  DateTime     @default(now())
+}
 
-  @@map("webZemi_users")
+model SongPhrase {
+  id        Int          @id @default(autoincrement())
+  songId    Int
+  order     Int
+  section   String
+  lyricEn   String
+  lyricJa   String
+  song      Song         @relation(fields: [songId], references: [id], onDelete: Cascade)
+  memos     PhraseMemo[]
+
+  @@unique([songId, order])
+}
+
+model PhraseMemo {
+  id            Int        @id @default(autoincrement())
+  phraseId      Int
+  content       String     @db.Text
+  phrase        SongPhrase @relation(fields: [phraseId], references: [id], onDelete: Cascade)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
 }

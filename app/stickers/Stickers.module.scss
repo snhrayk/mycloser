@@ -1,0 +1,45 @@
+@use "../styles/common.scss" as *;
+
+.container {
+  width: 100%;
+  height: 100dvh;
+}
+
+.header {
+  width: 100%;
+  height: 15dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  h1 {
+    font-size: $l;
+    font-weight: 800;
+  }
+  p {
+    font-size: $m;
+    font-weight: 500;
+  }
+}
+
+.main {
+  width: 100%;
+  height: 85dvh;
+  padding: 2.4rem 1.6rem 0 0;
+  .stickerArea {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: url("../../public/images/stickers_ring.svg"), $white;
+    background-position: left;
+    background-size: contain;
+    background-repeat: no-repeat;
+    border-radius: 0 2.4rem 2.4rem 0;
+    box-shadow: 0 0 4px 0 rgba(35, 35, 35, 0.25);
+    padding: 0.8rem 0 0 3.2rem;
+    h2 {
+      font-size: $l;
+      color: $main;
+      font-weight: bolder;
+    }
+  }
+}
