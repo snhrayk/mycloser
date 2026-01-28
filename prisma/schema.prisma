@@ -29,16 +29,6 @@ model SongPhrase {
   lyricEn   String
   lyricJa   String
   song      Song         @relation(fields: [songId], references: [id], onDelete: Cascade)
-  memos     PhraseMemo[]
 
   @@unique([songId, order])
-}
-
-model PhraseMemo {
-  id            Int        @id @default(autoincrement())
-  phraseId      Int
-  content       String     @db.Text
-  phrase        SongPhrase @relation(fields: [phraseId], references: [id], onDelete: Cascade)
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
 }

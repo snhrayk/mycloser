@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import styles from "./Lyrics.module.scss";
 import backBtn from "../../public/images/icons/back.svg";
 import nextBtn from "../../public/images/icons/next.svg";
@@ -9,9 +9,6 @@ import { useState, useMemo, useEffect } from "react";
 
 type Props = {
   song: {
-    id: number;
-    title: string;
-    background: string;
     phrases: {
       id: number;
       section: string;
@@ -19,27 +16,23 @@ type Props = {
       lyricJa: string;
     }[];
   };
-  searchParams: {
-    title?: string;
-    artist?: string;
-    image?: string;
-  };
 };
 
-export default function Lyrics({ song, searchParams }: Props) {
+export default function Lyrics({ song }: Props) {
+  const searchParams = useSearchParams();
   const router = useRouter();
-  const title = searchParams.title || song.title || "曲名";
-  const artist = searchParams.artist || "アーティスト名";
-  const image = searchParams.image || "";
+  const title = searchParams.get("title") || "曲名";
+  const artist = searchParams.get("artist") || "アーティスト名";
+  const image = searchParams.get("image") || "";
 
   const [showOriginal, setShowOriginal] = useState(true);
   const [showTranslation, setShowTranslation] = useState(true);
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [showModal, setShowModal] = useState(false);
 
-  useEffect(() => {
-    setShowModal(true);
-  }, []);
+  // useEffect(() => {
+  //   setShowModal(true);
+  // }, []);
 
   // セクションごとにフレーズをグループ化
   const sections = useMemo(() => {
@@ -89,6 +82,7 @@ export default function Lyrics({ song, searchParams }: Props) {
             <h2>ご注意</h2>
             <p className={styles.modalText}>
               実際の歌詞の取得が難しいため、代わりに
+              <br />
               <span>AIが生成した歌詞</span>
               を表示しています。そのため、内容が実際の歌詞と異なります。
             </p>
