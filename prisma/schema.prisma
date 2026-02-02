@@ -18,6 +18,7 @@ model Song {
   title      String       @unique
   background String
   phrases    SongPhrase[]
+  sections   SongSection[]
   createdAt  DateTime     @default(now())
 }
 
@@ -30,7 +31,6 @@ model SongPhrase {
   lyricJa   String
   song      Song         @relation(fields: [songId], references: [id], onDelete: Cascade)
   memos     PhraseMemo[]
-
   @@unique([songId, order])
 }
 
@@ -41,6 +41,15 @@ model PhraseMemo {
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
   phrase     SongPhrase @relation(fields: [phraseId], references: [id], onDelete: Cascade)
-
   @@unique([phraseId])
+}
+
+model SongSection {
+  id         Int      @id @default(autoincrement())
+  songId     Int
+  section    String
+  background String   @db.Text
+  order      Int
+  song       Song     @relation(fields: [songId], references: [id], onDelete: Cascade)
+  @@unique([songId, section])
 }

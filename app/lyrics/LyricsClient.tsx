@@ -19,6 +19,12 @@ type Props = {
       lyricEn: string;
       lyricJa: string;
     }[];
+    sections: {
+      id: number;
+      section: string;
+      background: string;
+      order: number;
+    }[];
   };
 };
 
@@ -33,6 +39,7 @@ export default function Lyrics({ song }: Props) {
   const [showTranslation, setShowTranslation] = useState(true);
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [showModal, setShowModal] = useState(false);
+  const [isExplainExpanded, setIsExplainExpanded] = useState(false);
 
   // メモ機能
   const {
@@ -68,6 +75,11 @@ export default function Lyrics({ song }: Props) {
 
   const currentSection = sections[currentPageIndex];
   const totalPages = sections.length;
+
+  // 現在のセクションの背景情報を取得
+  const currentSectionBackground =
+    song.sections.find((s) => s.section === currentSection?.section)
+      ?.background || "";
 
   // 選択されたフレーズを取得
   const selectedPhrase = song.phrases.find((p) => p.id === selectedPhraseId);
@@ -165,7 +177,20 @@ export default function Lyrics({ song }: Props) {
               </li>
             ))}
           </ul>
-          {/* <div className={styles.lyricsExplain}></div> */}
+        </div>
+        <div
+          className={styles.lyricsExplain}
+          style={{ height: isExplainExpanded ? "65dvh" : "4.8rem" }}
+        >
+          <h4
+            onClick={() => setIsExplainExpanded(!isExplainExpanded)}
+            style={{ cursor: "pointer" }}
+          >
+            {currentSection?.section}の解説
+          </h4>
+          {isExplainExpanded && (
+            <p style={{ whiteSpace: "pre-wrap" }}>{currentSectionBackground}</p>
+          )}
         </div>
         <div className={styles.pageNation}>
           <button
