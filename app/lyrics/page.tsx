@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import LyricsClient from "./LyricsClient";
+import { Suspense } from "react";
 
 const prisma = new PrismaClient();
 
@@ -22,5 +23,9 @@ export default async function LyricsServer() {
     return <div>曲が見つかりません</div>;
   }
 
-  return <LyricsClient song={song} />;
+  return (
+    <Suspense fallback={<div>読み込み中...</div>}>
+      <LyricsClient song={song} />
+    </Suspense>
+  );
 }

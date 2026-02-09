@@ -9,7 +9,7 @@ import { MarqueeText } from "../components/lyrics/MarqueeText";
 import MemoModal from "../components/lyrics/MemoModal";
 import NoticeModal from "../components/lyrics/NoticeModal";
 import { useMemoManager } from "../components/lyrics/useMemoManager";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
 type Props = {
   song: {
@@ -55,9 +55,9 @@ export default function Lyrics({ song }: Props) {
     handleCloseMemoModal,
   } = useMemoManager(song.phrases[0]?.id);
 
-  // useEffect(() => {
-  //   setShowModal(true);
-  // }, []);
+  useEffect(() => {
+    setShowModal(true);
+  }, []);
 
   // セクションごとにフレーズをグループ化
   const sections = useMemo(() => {
