@@ -4,7 +4,7 @@ import { Suspense } from "react";
 
 const prisma = new PrismaClient();
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export default async function LyricsServer() {
   const song = await prisma.song.findUnique({
