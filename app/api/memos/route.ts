@@ -1,9 +1,10 @@
 export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
+// import { NextRequest, NextResponse } from "next/server";
+// import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 // メモ一覧取得（特定の曲のメモを取得）
 export async function GET(request: NextRequest) {
